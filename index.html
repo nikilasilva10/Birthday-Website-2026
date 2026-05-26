@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, My Princess! ❤️</title>
+    
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Sacramento&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for beautiful, clean icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           GLOBAL VARIABLES & RESET
+           ========================================================================== */
+        :root {
+            --bg-gradient-start: #0f051d;
+            --bg-gradient-end: #05020a;
+            --primary-rose: #ff85a2;
+            --secondary-pink: #fca3b7;
+            --warm-gold: #e5c07b;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+            --font-cursive: 'Sacramento', 'Great Vibes', cursive;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Montserrat', sans-serif;
+            --text-glow: 0 0 10px rgba(255, 133, 162, 0.6);
+            --gold-glow: 0 0 10px rgba(229, 192, 123, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        body {
+            background-color: var(--bg-gradient-end);
+            background-image: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: #fff;
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            transition: background-color 2s ease, background-image 2s ease;
+        }
+
+        body.fairy-lit {
+            --bg-gradient-start: #1c0a22;
+            --bg-gradient-end: #0e0514;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 133, 162, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(229, 192, 123, 0.08) 0%, transparent 40%),
+                linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+        }
+
+        /* ==========================================================================
+           BACKGROUND PARTICLES CANVAS
+           ========================================================================== */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ==========================================================================
+           INTRO ENVELOPE SCREEN
+           ========================================================================== */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0a0314 0%, #030107 100%);
+            transition: opacity 1.5s cubic-bezier(0.77, 0, 0.175, 1), visibility 1.5s;
+        }
+
+        #intro-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            width: 320px;
+            height: 220px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .envelope-wrapper:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 50px rgba(255, 133, 162, 0.15), 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .envelope-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+            clip-path: polygon(0 0, 50% 55%, 100% 0);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 3;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: top;
+        }
+
+        .envelope-sides {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.015);
+            clip-path: polygon(0 0, 0 100%, 50% 55%, 100% 100%, 100% 0);
+            z-index: 2;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0 0 10px 10px;
+        }
+
+        .envelope-card {
+            position: absolute;
+            width: 90%;
+            height: 85%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            z-index: 1;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .envelope-card h3 {
+            font-family: var(--font-cursive);
+            font-size: 2.8rem;
+            color: var(--primary-rose);
+            text-shadow: var(--text-glow);
+            margin-bottom: 5px;
+        }
+
+        .envelope-card p {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: #ddd;
+            text-transform: uppercase;
+        }
+
+        .envelope-seal {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, var(--warm-gold) 30%, #b8860b 90%);
+            border-radius: 50%;
+            z-index: 4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), var(--gold-glow);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .envelope-seal i {
+            color: #5c3a00;
+            font-size: 1.8rem;
+            animation: pulse-heart 1.5s infinite;
+        }
+
+        /* Open State Animations */
+        .envelope-wrapper.open .envelope-top {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .envelope-wrapper.open .envelope-card {
+            transform: translateY(-90px) scale(1.05);
+            z-index: 4;
+        }
+
+        .envelope-wrapper.open .envelope-seal {
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        .hint-text {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            animation: pulse-glow 2s infinite ease-in-out;
+            text-align: center;
+        }
+
+        /* ==========================================================================
+           MAIN CONTENT CONTAINER
+           ========================================================================== */
+        #main-container {
+            width: 100%;
+            max-width: 960px;
+            min-height: 80vh;
+            z-index: 10;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        #main-container.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* ==========================================================================
+           MUSIC PLAYER CONTROL
+           ========================================================================== */
+        .music-player-toggle {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px var(--glass-shadow);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .music-player-toggle:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-rose);
+            box-shadow: 0 0 15px rgba(255, 133, 162, 0.4);
+        }
+
+        .music-player-toggle i {
+            color: #fff;
+            font-size: 1.3rem;
+            transition: color 0.3s ease;
+        }
+
+        .music-player-toggle.playing i {
+            color: var(--primary-rose);
+            animation: spin 3s linear infinite;
+        }
+
+        .music-player-toggle.playing {
+            border-color: var(--primary-rose);
+            box-shadow: 0 0 20px rgba(255, 133, 162, 0.3);
+        }
+
+        /* ==========================================================================
+           HEADER / TITLE SECTION
+           ========================================================================== */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .cursive-title {
+            font-family: var(--font-cursive);
+            font-size: 5.5rem;
+            background: linear-gradient(45deg, #ffd1dc, #ff85a2, #fca3b7, #e5c07b);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 12s ease infinite, title-entrance 1.5s ease-out;
+            text-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            line-height: 1.1;
+        }
+
+        .sub-title {
+            font-size: 0.95rem;
+            letter-spacing: 6px;
+            color: rgba(255, 255, 255, 0.65);
+            text-transform: uppercase;
+            margin-top: 15px;
+            position: relative;
+            display: inline-block;
+            animation: fade-in-up 2s ease;
+        }
+
+        .sub-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: var(--primary-rose);
+            box-shadow: var(--text-glow);
+        }
+
+        /* ==========================================================================
+           CAKE & INTERACTIVE CANDLES SECTION
+           ========================================================================== */
+        .cake-section {
+            width: 100%;
+            max-width: 500px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px var(--glass-shadow);
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+
+        .cake-section h2 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: var(--secondary-pink);
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        /* The stylized CSS Birthday Cake */
+        .cake-container {
+            position: relative;
+            width: 280px;
+            height: 240px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .cake-stand {
+            position: absolute;
+            bottom: 0;
+            width: 280px;
+            height: 16px;
+            background: linear-gradient(90deg, #d4af37, #f3e5ab, #d4af37);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        .cake-stand::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 15px;
+            background: linear-gradient(90deg, #c5a028, #b8860b);
+            clip-path: polygon(15% 0, 85% 0, 100% 100%, 0% 100%);
+        }
+
+        .cake-layer {
+            position: absolute;
+            border-radius: 12px 12px 0 0;
+            box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.15), 0 8px 16px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-around;
+            overflow: hidden;
+        }
+
+        .layer-bottom {
+            bottom: 16px;
+            width: 220px;
+            height: 75px;
+            background: linear-gradient(180deg, #ff85a2 0%, #ff4d73 100%);
+            z-index: 2;
+        }
+
+        .layer-top {
+            bottom: 91px;
+            width: 160px;
+            height: 60px;
+            background: linear-gradient(180deg, #ffd1dc 0%, #fca3b7 100%);
+            z-index: 3;
+        }
+
+        /* Cake Drips Decor */
+        .cream-drips {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 18px;
+            background: #fff8f9;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+        }
+
+        .cream-drips::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: #fff8f9;
+            clip-path: polygon(
+                0% 0%, 10% 0%, 10% 80%, 20% 0%, 30% 0%, 30% 100%, 
+                40% 0%, 50% 0%, 50% 60%, 60% 0%, 70% 0%, 70% 90%, 
+                80% 0%, 90% 0%, 90% 50%, 100% 0%
+            );
+        }
+
+        .layer-bottom .cream-drips {
+            background: #ffd1dc;
+        }
+
+        .layer-bottom .cream-drips::after {
+            background: #ffd1dc;
+        }
+
+        /* Cake Sprinkles */
+        .sprinkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .sprinkle {
+            position: absolute;
+            width: 8px;
+            height: 4px;
+            border-radius: 2px;
+            opacity: 0.8;
+        }
+
+        .sprinkle:nth-child(1) { top: 25px; left: 20px; background: #e5c07b; transform: rotate(15deg); }
+        .sprinkle:nth-child(2) { top: 35px; left: 50px; background: #fff; transform: rotate(-30deg); }
+        .sprinkle:nth-child(3) { top: 20px; left: 80px; background: #ff85a2; transform: rotate(45deg); }
+        .sprinkle:nth-child(4) { top: 40px; left: 110px; background: #e5c07b; transform: rotate(-10deg); }
+        .sprinkle:nth-child(5) { top: 25px; left: 130px; background: #fff; transform: rotate(20deg); }
+        
+        .layer-bottom .sprinkle:nth-child(1) { top: 30px; left: 30px; background: #e5c07b; }
+        .layer-bottom .sprinkle:nth-child(2) { top: 45px; left: 70px; background: #fff; }
+        .layer-bottom .sprinkle:nth-child(3) { top: 25px; left: 110px; background: #ffd1dc; }
+        .layer-bottom .sprinkle:nth-child(4) { top: 50px; left: 150px; background: #e5c07b; }
+        .layer-bottom .sprinkle:nth-child(5) { top: 35px; left: 180px; background: #fff; }
+
+        /* Cake Candles */
+        .candles-row {
+            position: absolute;
+            bottom: 151px;
+            width: 160px;
+            height: 70px;
+            z-index: 4;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 15px;
+        }
+
+        .candle-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 25px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .candle-body {
+            width: 8px;
+            height: 45px;
+            background: linear-gradient(to right, #ffd1dc, #ff85a2 40%, #ffd1dc);
+            border-radius: 4px/2px;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .candle-body::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255, 255, 255, 0.4) 6px, rgba(255, 255, 255, 0.4) 12px);
+        }
+
+        .candle-wick {
+            width: 2px;
+            height: 6px;
+            background: #333;
+        }
+
+        .candle-flame {
+            width: 12px;
+            height: 22px;
+            background: radial-gradient(ellipse at bottom, #ffea4a 10%, #ff8000 70%, #ff0000 100%);
+            border-radius: 50% 50% 20% 20% / 60% 60% 40% 40%;
+            box-shadow: 0 0 10px #ffea4a, 0 0 20px #ff8000, 0 0 30px #ff0000;
+            animation: flicker 0.15s ease-in-out infinite alternate;
+            transform-origin: bottom center;
+            transition: all 0.4s ease-out;
+        }
+
+        /* Blown out state */
+        .candle-wrapper.extinguished .candle-flame {
+            transform: scale(0);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .candle-wrapper.extinguished .candle-body {
+            filter: brightness(0.6);
+        }
+
+        /* Blow hint */
+        .candle-wrapper::before {
+            content: 'Blow!';
+            position: absolute;
+            top: -25px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #05020a;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            letter-spacing: 0.5px;
+        }
+
+        .candle-wrapper:hover::before {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .candle-wrapper.extinguished:hover::before {
+            display: none;
+        }
+
+        /* Wish Panel Reveal styling */
+        .cake-instructions {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1px;
+            margin-top: 10px;
+            transition: opacity 0.5s ease;
+        }
+
+        /* ==========================================================================
+           REVEALED BIRTHDAY WISH CARD
+           ========================================================================== */
+        .birthday-card-reveal {
+            max-width: 550px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 45px 35px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            text-align: center;
+            display: none;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-bottom: 60px;
+            z-index: 10;
+        }
+
+        .birthday-card-reveal.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .birthday-card-reveal .sparkle-icon {
+            font-size: 2.2rem;
+            color: var(--warm-gold);
+            margin-bottom: 20px;
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+
+        .birthday-card-reveal h3 {
+            font-family: var(--font-cursive);
+            font-size: 4rem;
+            color: var(--primary-rose);
+            text-shadow: var(--text-glow);
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .birthday-card-reveal .wishing-text {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #fce6ec;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .birthday-card-reveal .signature {
+            font-family: var(--font-cursive);
+            font-size: 2.5rem;
+            color: var(--warm-gold);
+            text-shadow: var(--gold-glow);
+        }
+
+        /* ==========================================================================
+           POLAROID MEMORY STACK SECTION
+           ========================================================================== */
+        .polaroid-gallery-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .polaroid-gallery-section h2 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: var(--secondary-pink);
+            margin-bottom: 45px;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .polaroid-gallery-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        .polaroid-stack {
+            position: relative;
+            width: 320px;
+            height: 380px;
+            margin: 0 auto;
+        }
+
+        .polaroid-card {
+            position: absolute;
+            width: 300px;
+            height: 360px;
+            background: #fff;
+            padding: 15px 15px 35px 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border-radius: 4px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform-origin: center center;
+        }
+
+        .polaroid-card .photo-frame {
+            width: 100%;
+            height: 260px;
+            background: #eee;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .polaroid-card .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .polaroid-card:hover .photo-frame img {
+            transform: scale(1.08);
+        }
+
+        .polaroid-card .caption-box {
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 15px;
+        }
+
+        .polaroid-card .caption-box p {
+            font-family: var(--font-cursive);
+            font-size: 2.2rem;
+            color: #4a3440;
+            text-align: center;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        /* Stack Positioning via JS but beautiful initial states here */
+        .polaroid-card:nth-child(1) {
+            transform: rotate(-6deg) translate(-10px, 0);
+            z-index: 3;
+        }
+        .polaroid-card:nth-child(2) {
+            transform: rotate(4deg) translate(10px, 5px);
+            z-index: 2;
+        }
+        .polaroid-card:nth-child(3) {
+            transform: rotate(-2deg) translate(0, 10px);
+            z-index: 1;
+        }
+
+        .gallery-nav-hint {
+            margin-top: 25px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .gallery-nav-hint i {
+            animation: float-horizontal 1.5s infinite ease-in-out;
+        }
+
+        /* ==========================================================================
+           RUNAWAY BUTTON GAME SECTION
+           ========================================================================== */
+        .game-section {
+            width: 100%;
+            max-width: 500px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px 30px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px var(--glass-shadow);
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: visible;
+        }
+
+        .game-section h2 {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            color: var(--secondary-pink);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .game-section p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            width: 100%;
+            height: 60px;
+            position: relative;
+        }
+
+        .btn-love {
+            padding: 12px 35px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: var(--font-sans);
+            letter-spacing: 1px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ff85a2 0%, #ff4d73 100%);
+            color: #fff;
+            box-shadow: 0 10px 25px rgba(255, 133, 162, 0.4), var(--text-glow);
+            animation: pulse-scale 2s infinite ease-in-out;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(255, 133, 162, 0.6), 0 0 25px rgba(255, 133, 162, 0.8);
+        }
+
+        .btn-no {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--glass-border);
+            color: rgba(255, 255, 255, 0.7);
+            position: absolute;
+            transition: all 0.25s ease;
+            z-index: 10;
+        }
+
+        /* Success Overlay modal */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 2, 10, 0.95);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        .success-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .success-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 50px 40px;
+            text-align: center;
+            max-width: 480px;
+            width: 90%;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            box-shadow: 0 30px 70px rgba(255, 133, 162, 0.15), var(--text-glow);
+            transform: scale(0.7) translateY(30px);
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .success-overlay.show .success-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .success-card i.heart-main {
+            font-size: 5rem;
+            color: var(--primary-rose);
+            text-shadow: var(--text-glow);
+            animation: heartbeat-large 1.2s infinite ease-in-out;
+            margin-bottom: 30px;
+        }
+
+        .success-card h3 {
+            font-family: var(--font-cursive);
+            font-size: 3.5rem;
+            color: var(--primary-rose);
+            margin-bottom: 20px;
+        }
+
+        .success-card p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #eee;
+            margin-bottom: 35px;
+        }
+
+        .btn-close-success {
+            padding: 12px 35px;
+            border-radius: 50px;
+            background: var(--warm-gold);
+            color: #05020a;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--gold-glow);
+            transition: all 0.3s ease;
+        }
+
+        .btn-close-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(229, 192, 123, 0.6);
+        }
+
+        /* ==========================================================================
+           FOOTER SECTION
+           ========================================================================== */
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.25);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: 25px;
+            width: 100%;
+        }
+
+        footer i {
+            color: var(--primary-rose);
+            animation: pulse-heart 1.5s infinite;
+        }
+
+        /* ==========================================================================
+           KEYFRAME ANIMATIONS
+           ========================================================================== */
+        @keyframes pulse-heart {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        @keyframes heartbeat-large {
+            0%, 14%, 35%, 100% { transform: scale(1); }
+            7%, 21% { transform: scale(1.2) rotate(3deg); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.4; text-shadow: 0 0 5px rgba(255,255,255,0.1); }
+            50% { opacity: 1; text-shadow: 0 0 15px rgba(255, 255, 255, 0.6); }
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-1deg); }
+            100% { transform: scale(1.08) rotate(1.5deg) skewX(2deg); filter: brightness(1.1); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes title-entrance {
+            from { opacity: 0; transform: translateY(-30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse-scale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+        }
+
+        @keyframes float-horizontal {
+            0%, 100% { transform: translateX(-3px); }
+            50% { transform: translateX(3px); }
+        }
+
+        /* ==========================================================================
+           RESPONSIVE MEDIA QUERIES
+           ========================================================================== */
+        @media (max-width: 600px) {
+            .cursive-title {
+                font-size: 3.8rem;
+            }
+            .sub-title {
+                font-size: 0.8rem;
+                letter-spacing: 4px;
+            }
+            .cake-section, .birthday-card-reveal, .game-section {
+                padding: 25px 20px;
+                border-radius: 16px;
+            }
+            .birthday-card-reveal h3 {
+                font-size: 2.8rem;
+            }
+            .birthday-card-reveal .wishing-text {
+                font-size: 0.95rem;
+                line-height: 1.6;
+            }
+            .polaroid-stack {
+                width: 280px;
+                height: 340px;
+            }
+            .polaroid-card {
+                width: 260px;
+                height: 320px;
+            }
+            .polaroid-card .photo-frame {
+                height: 220px;
+            }
+            .polaroid-card .caption-box p {
+                font-size: 1.8rem;
+            }
+            .music-player-toggle {
+                top: 15px;
+                right: 15px;
+                width: 48px;
+                height: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Interactive Background Particle System -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- FLOATING MUSIC PLAYER CONTROL -->
+    <div class="music-player-toggle" id="music-toggle" title="Toggle Romantic Ambient Music">
+        <i class="fa-solid fa-music"></i>
+    </div>
+
+    <!-- 1. INTRO ENVELOPE CONTAINER -->
+    <section id="intro-screen">
+        <div class="envelope-wrapper" id="envelope">
+            <div class="envelope-top"></div>
+            <div class="envelope-sides"></div>
+            <div class="envelope-card">
+                <h3>For You</h3>
+                <p>Click to open</p>
+            </div>
+            <div class="envelope-seal">
+                <i class="fa-solid fa-heart"></i>
+            </div>
+        </div>
+        <div class="hint-text">A little magic is waiting inside...</div>
+    </section>
+
+    <!-- 2. MAIN WEBSITE CONTENT (Initially Hidden) -->
+    <main id="main-container">
+        
+        <!-- Header -->
+        <header>
+            <h1 class="cursive-title">Happy Birthday!</h1>
+            <p class="sub-title">To my wonderful Princess</p>
+        </header>
+
+        <!-- Cake & Candle Section -->
+        <section class="cake-section" id="cake-sect">
+            <h2>Make a Wish & Blow the Candles!</h2>
+            
+            <div class="cake-container">
+                <!-- 3 Interactive Candles -->
+                <div class="candles-row">
+                    <div class="candle-wrapper" onclick="extinguishCandle(this, 1)">
+                        <div class="candle-flame"></div>
+                        <div class="candle-wick"></div>
+                        <div class="candle-body"></div>
+                    </div>
+                    <div class="candle-wrapper" onclick="extinguishCandle(this, 2)">
+                        <div class="candle-flame"></div>
+                        <div class="candle-wick"></div>
+                        <div class="candle-body"></div>
+                    </div>
+                    <div class="candle-wrapper" onclick="extinguishCandle(this, 3)">
+                        <div class="candle-flame"></div>
+                        <div class="candle-wick"></div>
+                        <div class="candle-body"></div>
+                    </div>
+                </div>
+
+                <!-- CSS Cake Layers -->
+                <div class="cake-layer layer-top">
+                    <div class="cream-drips"></div>
+                    <div class="sprinkles">
+                        <div class="sprinkle"></div>
+                        <div class="sprinkle"></div>
+                        <div class="sprinkle"></div>
+                        <div class="sprinkle"></div>
+                        <div class="sprinkle"></div>
+                    </div>
+                </div>
+                <div class="cake-layer layer-bottom">
+                    <div class="cream-drips"></div>
+                    <div class="sprinkles">
+                        <div class="sprinkle"></div>
+                        <div class="sprinkle"></div>
+                        <div class="sprinkle"></div>
+                        <div class="sprinkle"></div>
+                        <div class="sprinkle"></div>
+                    </div>
+                </div>
+
+                <!-- Elegant Stand -->
+                <div class="cake-stand"></div>
+            </div>
+
+            <p class="cake-instructions" id="cake-instruction-text">
+                Tap each candle to blow it out...
+            </p>
+        </section>
+
+        <!-- Revealed Sweet Love Letter Card (Appears after blowing candles) -->
+        <section class="birthday-card-reveal" id="love-card">
+            <div class="sparkle-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <h3>To My Favorite Person</h3>
+            <p class="wishing-text" id="wishing-text-box">
+                <!-- Text populated dynamically by typewriter effect in JS -->
+            </p>
+            <p class="signature">Forever & Always, Yours ❤️</p>
+        </section>
+
+        <!-- Polaroid Memory Stack Section -->
+        <section class="polaroid-gallery-section">
+            <h2>Moments Made of Magic</h2>
+            <div class="polaroid-stack" id="polaroid-deck">
+                
+                <!-- Polaroid Card 1 -->
+                <div class="polaroid-card" onclick="cyclePolaroid()">
+                    <div class="photo-frame">
+                        <img src="https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?w=600&auto=format&fit=crop&q=80" alt="Starry night">
+                    </div>
+                    <div class="caption-box">
+                        <p>Under the stars...</p>
+                    </div>
+                </div>
+
+                <!-- Polaroid Card 2 -->
+                <div class="polaroid-card" onclick="cyclePolaroid()">
+                    <div class="photo-frame">
+                        <img src="https://images.unsplash.com/photo-1535141192574-5d4897c13636?w=600&auto=format&fit=crop&q=80" alt="Birthday Cake">
+                    </div>
+                    <div class="caption-box">
+                        <p>Pure happiness</p>
+                    </div>
+                </div>
+
+                <!-- Polaroid Card 3 -->
+                <div class="polaroid-card" onclick="cyclePolaroid()">
+                    <div class="photo-frame">
+                        <img src="https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?w=600&auto=format&fit=crop&q=80" alt="Cherry blossoms">
+                    </div>
+                    <div class="caption-box">
+                        <p>Beautiful days</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="gallery-nav-hint">
+                <i class="fa-solid fa-arrow-pointer"></i> Tap stack to cycle cards
+            </div>
+        </section>
+
+        <!-- Playful Runaway Button Game Section -->
+        <section class="game-section">
+            <h2>A Quick Question... 🌸</h2>
+            <p>Do you promise to let me spoil you all day today, and eat the biggest piece of cake?</p>
+            
+            <div class="button-group" id="btn-group-container">
+                <button class="btn-love btn-yes" onclick="showLoveSuccess()">
+                    Yes, I do! <i class="fa-solid fa-heart"></i>
+                </button>
+                <button class="btn-love btn-no" id="runaway-btn" onmouseover="teleportBtn()" onclick="teleportBtn()">
+                    No way! 😜
+                </button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            Made with <i class="fa-solid fa-heart"></i> for you on your special day
+        </footer>
+
+    </main>
+
+    <!-- Runaway Button Love Success Overlay -->
+    <div class="success-overlay" id="love-modal">
+        <div class="success-card">
+            <i class="fa-solid fa-heart heart-main"></i>
+            <h3>Yaaaaay! ❤️</h3>
+            <p>You promised! Get ready for a day full of endless cuddles, sweet surprises, delicious cake, and beautiful memories. I love you more than words can express!</p>
+            <button class="btn-close-success" onclick="closeLoveSuccess()">Close & Celebrate!</button>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       JAVASCRIPT LOGIC
+       ========================================================================== -->
+    <script>
+        /* ==========================================================================
+           1. CANVAS PARTICLE SYSTEM
+           ========================================================================== */
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let particlesArray = [];
+        let mouse = { x: null, y: null, radius: 100 };
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        window.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        // Particle Class
+        class Particle {
+            constructor(type) {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 100;
+                this.size = Math.random() * 12 + 6;
+                this.speedX = Math.random() * 1.5 - 0.75;
+                this.speedY = -(Math.random() * 1.2 + 0.5);
+                this.type = type || (Math.random() > 0.4 ? 'star' : 'heart');
+                this.opacity = Math.random() * 0.5 + 0.3;
+                this.hue = Math.random() > 0.5 ? 340 : 355; // Cute pink/rose colors
+                this.angle = Math.random() * Math.PI * 2;
+                this.spin = Math.random() * 0.02 - 0.01;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+
+                if (this.type === 'heart') {
+                    ctx.fillStyle = `hsl(${this.hue}, 90%, 75%)`;
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    // Draw a beautiful Vector Heart
+                    ctx.bezierCurveTo(-this.size/2, -this.size/2, -this.size, -this.size/6, 0, this.size);
+                    ctx.bezierCurveTo(this.size, -this.size/6, this.size/2, -this.size/2, 0, 0);
+                    ctx.fill();
+                } else {
+                    // Draw a soft glowing glittering Star
+                    ctx.fillStyle = '#ffecb3';
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = '#ffe082';
+                    ctx.beginPath();
+                    for (let i = 0; i < 5; i++) {
+                        ctx.lineTo(Math.cos((18 + i * 72) * Math.PI / 180) * this.size/2,
+                                   Math.sin((18 + i * 72) * Math.PI / 180) * this.size/2);
+                        ctx.lineTo(Math.cos((54 + i * 72) * Math.PI / 180) * this.size/4,
+                                   Math.sin((54 + i * 72) * Math.PI / 180) * this.size/4);
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX + Math.sin(this.y * 0.01) * 0.2;
+                this.angle += this.spin;
+
+                // Mouse interaction - gentle push away
+                if (mouse.x != null && mouse.y != null) {
+                    let dx = this.x - mouse.x;
+                    let dy = this.y - mouse.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) {
+                        let force = (mouse.radius - distance) / mouse.radius;
+                        let directionX = dx / distance;
+                        let directionY = dy / distance;
+                        this.x += directionX * force * 5;
+                        this.y += directionY * force * 5;
+                    }
+                }
+
+                // Recycle if floats out of window top or sides
+                if (this.y < -30 || this.x < -30 || this.x > canvas.width + 30) {
+                    this.y = canvas.height + 40;
+                    this.x = Math.random() * canvas.width;
+                    this.speedY = -(Math.random() * 1.2 + 0.5);
+                    this.opacity = Math.random() * 0.5 + 0.3;
+                }
+            }
+        }
+
+        // Custom Burst Explosion (Confetti / Glitter)
+        function triggerConfettiBurst(count, sourceX, sourceY) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    let p = new Particle();
+                    p.x = sourceX;
+                    p.y = sourceY;
+                    p.speedX = Math.random() * 12 - 6;
+                    p.speedY = Math.random() * -12 - 3;
+                    p.opacity = 1;
+                    p.size = Math.random() * 10 + 8;
+                    particlesArray.push(p);
+                }, i * 3);
+            }
+        }
+
+        function initParticles() {
+            resizeCanvas();
+            particlesArray = [];
+            let quantity = window.innerWidth < 600 ? 30 : 65;
+            for (let i = 0; i < quantity; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        // Initialize particles background
+        initParticles();
+        animateParticles();
+
+
+        /* ==========================================================================
+           2. WEB AUDIO API SYNTHESIZER (MUSIC BOX & SOUND EFFECTS)
+           ========================================================================== */
+        let audioCtx = null;
+        let isMusicPlaying = false;
+        let melodyTimeout = null;
+        let melodyIndex = 0;
+        let synthGainNode = null;
+
+        // Custom chime melody notes for "Happy Birthday" (dreamy high octave chimes)
+        const happyBirthdayMelody = [
+            { note: 'G4', dur: 0.35, rest: 0.1 },
+            { note: 'G4', dur: 0.15, rest: 0.05 },
+            { note: 'A4', dur: 0.5, rest: 0.1 },
+            { note: 'G4', dur: 0.5, rest: 0.1 },
+            { note: 'C5', dur: 0.5, rest: 0.1 },
+            { note: 'B4', dur: 1.0, rest: 0.3 },
+            
+            { note: 'G4', dur: 0.35, rest: 0.1 },
+            { note: 'G4', dur: 0.15, rest: 0.05 },
+            { note: 'A4', dur: 0.5, rest: 0.1 },
+            { note: 'G4', dur: 0.5, rest: 0.1 },
+            { note: 'D5', dur: 0.5, rest: 0.1 },
+            { note: 'C5', dur: 1.0, rest: 0.3 },
+            
+            { note: 'G4', dur: 0.35, rest: 0.1 },
+            { note: 'G4', dur: 0.15, rest: 0.05 },
+            { note: 'G5', dur: 0.5, rest: 0.1 },
+            { note: 'E5', dur: 0.5, rest: 0.1 },
+            { note: 'C5', dur: 0.5, rest: 0.1 },
+            { note: 'B4', dur: 0.5, rest: 0.1 },
+            { note: 'A4', dur: 0.8, rest: 0.2 },
+            
+            { note: 'F5', dur: 0.35, rest: 0.1 },
+            { note: 'F5', dur: 0.15, rest: 0.05 },
+            { note: 'E5', dur: 0.5, rest: 0.1 },
+            { note: 'C5', dur: 0.5, rest: 0.1 },
+            { note: 'D5', dur: 0.5, rest: 0.1 },
+            { note: 'C5', dur: 1.2, rest: 0.8 }
+        ];
+
+        const noteFreqs = {
+            'G4': 392.00, 'A4': 440.00, 'B4': 493.88, 'C5': 523.25, 
+            'D5': 587.33, 'E5': 659.25, 'F5': 698.46, 'G5': 783.99
+        };
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                synthGainNode = audioCtx.createGain();
+                synthGainNode.gain.setValueAtTime(0.08, audioCtx.currentTime); // Soft volume
+                synthGainNode.connect(audioCtx.destination);
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        // Plays a cute chime synth sound with customizable envelope
+        function playChime(freq, duration, type = 'sine') {
+            const ctx = getAudioContext();
+            const osc = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+
+            // Music box envelope
+            gainNode.gain.setValueAtTime(0.001, ctx.currentTime);
+            // Instant attack
+            gainNode.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02);
+            // Sweet decay / ring-out
+            gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
+            osc.connect(gainNode);
+            gainNode.connect(synthGainNode);
+
+            osc.start();
+            osc.stop(ctx.currentTime + duration);
+        }
+
+        // Plays the synthesized music box loop
+        function playMelodyLoop() {
+            if (!isMusicPlaying) return;
+
+            const noteObj = happyBirthdayMelody[melodyIndex];
+            const freq = noteFreqs[noteObj.note];
+
+            if (freq) {
+                // Play overlapping chime voices for bell/music box resonance
+                playChime(freq, noteObj.dur * 1.5, 'sine');
+                // Subtle triangle secondary voice for high harmonic shimmer
+                setTimeout(() => {
+                    playChime(freq * 2, noteObj.dur * 0.8, 'triangle');
+                }, 30);
+            }
+
+            melodyIndex = (melodyIndex + 1) % happyBirthdayMelody.length;
+            const nextNoteDelay = (noteObj.dur + noteObj.rest) * 1000;
+
+            melodyTimeout = setTimeout(playMelodyLoop, nextNoteDelay);
+        }
+
+        function toggleMusic() {
+            getAudioContext();
+            const toggleBtn = document.getElementById('music-toggle');
+
+            if (isMusicPlaying) {
+                // Pause Music
+                isMusicPlaying = false;
+                clearTimeout(melodyTimeout);
+                toggleBtn.classList.remove('playing');
+            } else {
+                // Play Music
+                isMusicPlaying = true;
+                toggleBtn.classList.add('playing');
+                melodyIndex = 0; // restart
+                playMelodyLoop();
+            }
+        }
+
+        // Set up click on floating player
+        document.getElementById('music-toggle').addEventListener('click', toggleMusic);
+
+
+        /* ==========================================================================
+           3. ENVELOPE INTRO SCREEN CONTROLLERS
+           ========================================================================== */
+        const envelope = document.getElementById('envelope');
+        const introScreen = document.getElementById('intro-screen');
+        const mainContainer = document.getElementById('main-container');
+
+        envelope.addEventListener('click', function() {
+            if (this.classList.contains('open')) return;
+
+            this.classList.add('open');
+            getAudioContext(); // Pre-warm Web Audio API Context on user interaction
+
+            // Trigger beautiful particle bursts from the center of envelope
+            const envelopeRect = envelope.getBoundingClientRect();
+            const burstX = envelopeRect.left + envelopeRect.width / 2;
+            const burstY = envelopeRect.top + envelopeRect.height / 2;
+            triggerConfettiBurst(55, burstX, burstY);
+
+            // Wait for letter opening animations to finish, then transition screens
+            setTimeout(() => {
+                introScreen.classList.add('fade-out');
+                mainContainer.classList.add('show');
+                
+                // Trigger ambient music automatically once entering main view!
+                if (!isMusicPlaying) {
+                    toggleMusic();
+                }
+
+                // Trigger elegant falling stars entrance burst
+                triggerConfettiBurst(35, window.innerWidth / 2, 100);
+            }, 1800);
+        });
+
+
+        /* ==========================================================================
+           4. INTERACTIVE BIRTHDAY CAKE & CANDLE BLOW ENGINE
+           ========================================================================== */
+        let extinguishedCandles = 0;
+        const totalCandles = 3;
+
+        // Custom romantic messages for the typewriter reveal
+        const letterMessage = "Happy Birthday, My Sweetheart! 🎂✨\n\nToday is all about celebrating the most beautiful person in my life. You bring so much color, warmth, and magical laughter into my world every single day. My only wish today is to make you smile as brightly as you make me smile, and to walk hand-in-hand with you through every beautiful dream ahead. May all your deepest desires come true today!\n\nI love you to the moon and back. Always. ❤️";
+
+        function extinguishCandle(wrapper, index) {
+            if (wrapper.classList.contains('extinguished')) return;
+
+            wrapper.classList.add('extinguished');
+            extinguishedCandles++;
+
+            // Custom melodic synth sound effect when candle is blown
+            const frequencies = [523.25, 659.25, 783.99]; // C5, E5, G5 rising triad
+            playChime(frequencies[extinguishedCandles - 1], 1.2, 'sine');
+            playChime(frequencies[extinguishedCandles - 1] * 1.5, 0.6, 'triangle');
+
+            // Trigger small sparkles above the candle wick
+            const rect = wrapper.getBoundingClientRect();
+            triggerConfettiBurst(8, rect.left + rect.width/2, rect.top);
+
+            const instructionText = document.getElementById('cake-instruction-text');
+            if (extinguishedCandles < totalCandles) {
+                instructionText.textContent = `Wonderful! Blow ${totalCandles - extinguishedCandles} more...`;
+            } else {
+                // All candles extinguished! Let the magic unfold.
+                instructionText.style.opacity = '0';
+                
+                // Add ambient twilight fairy lit atmosphere to whole page!
+                document.body.classList.add('fairy-lit');
+
+                // Major fireworks celebration
+                setTimeout(() => {
+                    const cakeRect = document.getElementById('cake-sect').getBoundingClientRect();
+                    triggerConfettiBurst(60, cakeRect.left + cakeRect.width/2, cakeRect.top);
+                    
+                    // Fire custom sound fanfare
+                    playChime(523.25, 0.4, 'sine');
+                    setTimeout(() => playChime(659.25, 0.4, 'sine'), 100);
+                    setTimeout(() => playChime(783.99, 0.4, 'sine'), 200);
+                    setTimeout(() => playChime(1046.50, 1.8, 'sine'), 300); // High C6 chime
+                }, 400);
+
+                // Reveal Love Letter dynamically
+                setTimeout(() => {
+                    const loveCard = document.getElementById('love-card');
+                    loveCard.classList.add('show');
+                    
+                    // Scroll smoothly to love card
+                    loveCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Run beautiful typewriter effect inside love card
+                    typeWriter('wishing-text-box', letterMessage, 35);
+                }, 1200);
+            }
+        }
+
+        // Typewriter text generator
+        function typeWriter(elementId, text, speed) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = '';
+            let i = 0;
+
+            function type() {
+                if (i < text.length) {
+                    if (text.charAt(i) === '\n') {
+                        element.innerHTML += '<br>';
+                    } else {
+                        element.innerHTML += text.charAt(i);
+                    }
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+
+        /* ==========================================================================
+           5. 3D DECK OF POLAROIDS GALLERY SYSTEM
+           ========================================================================== */
+        const deck = document.getElementById('polaroid-deck');
+        let polaroids = Array.from(deck.children);
+
+        // Sets up 3D rotations, transformations, and layers dynamically based on order
+        function updatePolaroidStack() {
+            polaroids.forEach((card, index) => {
+                card.style.zIndex = polaroids.length - index;
+                
+                if (index === 0) {
+                    // Front card styling
+                    card.style.transform = 'scale(1) rotate(-4deg) translate(0, 0)';
+                    card.style.pointerEvents = 'auto';
+                    card.style.filter = 'none';
+                    card.style.opacity = '1';
+                } else if (index === 1) {
+                    // Second card styling
+                    card.style.transform = 'scale(0.95) rotate(3deg) translate(25px, 15px)';
+                    card.style.pointerEvents = 'none';
+                    card.style.filter = 'brightness(0.8)';
+                    card.style.opacity = '0.9';
+                } else {
+                    // Back card styling
+                    card.style.transform = 'scale(0.9) rotate(-1deg) translate(-20px, 30px)';
+                    card.style.pointerEvents = 'none';
+                    card.style.filter = 'brightness(0.6)';
+                    card.style.opacity = '0.8';
+                }
+            });
+        }
+
+        function cyclePolaroid() {
+            // Take the front card
+            const topCard = polaroids.shift();
+            
+            // Perform elegant sliding transition to back of stack
+            topCard.style.transform = 'scale(0.8) rotate(15deg) translate(180px, -40px)';
+            topCard.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Add it back to end of deck array
+                polaroids.push(topCard);
+                updatePolaroidStack();
+                
+                // Play tiny romantic harp sound for card cycle
+                playChime(783.99, 0.15, 'triangle');
+                setTimeout(() => playChime(987.77, 0.25, 'triangle'), 60);
+            }, 300);
+        }
+
+        // Initialize Polaroid deck arrangement
+        updatePolaroidStack();
+
+
+        /* ==========================================================================
+           6. PLAYFUL RUNAWAY BUTTON GAME
+           ========================================================================== */
+        const runawayBtn = document.getElementById('runaway-btn');
+        const container = document.getElementById('btn-group-container');
+
+        function teleportBtn() {
+            // Generate random bounds inside the game section card
+            const section = runawayBtn.closest('.game-section');
+            const sectionRect = section.getBoundingClientRect();
+            
+            // Random offset generation (keeping within cards safety margins)
+            const margin = 20;
+            const minX = -sectionRect.width / 2.5;
+            const maxX = sectionRect.width / 2.5;
+            const minY = -60;
+            const maxY = 100;
+            
+            const randomX = Math.random() * (maxX - minX) + minX;
+            const randomY = Math.random() * (maxY - minY) + minY;
+            
+            runawayBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            
+            // Play a playful little high buzz sound
+            playChime(1200, 0.08, 'triangle');
+        }
+
+        function showLoveSuccess() {
+            // Trigger massive beautiful celebratory explosion of hearts!
+            const successBtn = document.querySelector('.btn-yes');
+            const rect = successBtn.getBoundingClientRect();
+            triggerConfettiBurst(50, rect.left + rect.width/2, rect.top);
+            
+            // Open modal
+            document.getElementById('love-modal').classList.add('show');
+            
+            // Soft lovely chord synthesis
+            playChime(261.63, 0.8, 'sine'); // C4
+            playChime(329.63, 0.8, 'sine'); // E4
+            playChime(392.00, 0.8, 'sine'); // G4
+            playChime(523.25, 1.5, 'sine'); // C5
+        }
+
+        function closeLoveSuccess() {
+            document.getElementById('love-modal').classList.remove('show');
+            
+            // Reset runaway button back to original position
+            runawayBtn.style.transform = 'translate(0, 0)';
+            
+            // Fire happy confetti cascade from screen top!
+            triggerConfettiBurst(35, window.innerWidth / 2, 50);
+        }
+    </script>
+</body>
+</html>
